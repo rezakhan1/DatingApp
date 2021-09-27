@@ -18,7 +18,7 @@ namespace API.Controllers
         {
             _DataContext=dataContext;
         }
-        [HttpGet]
+        [HttpGet("allusers")]
         public async Task<ActionResult<IEnumerable<AppUser>>> getUsers(){
            return await _DataContext.User.ToListAsync();
         }
