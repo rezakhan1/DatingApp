@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entity;
+using API.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,9 +16,11 @@ namespace API.Controllers
     public class AccountController:BaseController
     {
         DataContext _datacontext;
-        public AccountController(DataContext dataContext)
+        ITokenService _tokenservice;
+        public AccountController(DataContext dataContext,ITokenService tokenService)
         {
             _datacontext=dataContext;
+            _tokenservice=tokenService;
         }
 
         [HttpPost("register")]
@@ -36,6 +39,26 @@ namespace API.Controllers
            await _datacontext.SaveChangesAsync();
 
           return registerUser;
+        }
+        
+        [HttpPost("login")]
+        public async Task<ActionResult<UserDTO>> login(LoginDTO loginDTO){
+                  var user=await _datacontext.User
+                           .SingleOrDefaultAsync(x =>x.UserName ==loginDTO.UserName);
+
+                  if(user ==null) return Unauthorized("User no found");
+
+                  using var hmac=new HMACSHA512(user.SaltPassword);
+                  var hashPassword=hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
+
+                  for(int i=0;i<hashPassword.Length;i++){
+                     if(hashPassword[i] !=user.HashPassword[i]) return Unauthorized("Passowrd Wrong");
+                  }
+
+                return new UserDTO{
+                    UserName=user.UserName,
+                    Token=_tokenservice.CreateToken(user)
+                };
         }
 
         private async  Task<bool> isUserExists(string userName){
