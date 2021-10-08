@@ -24,7 +24,7 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AppUser>> register(RegisterDTO registerDTO){
+        public async Task<ActionResult<UserDTO>> register(RegisterDTO registerDTO){
 
           if(await isUserExists(registerDTO.UserName)) return BadRequest("User is already taken");
            using var hash=new HMACSHA512();
@@ -37,8 +37,11 @@ namespace API.Controllers
 
           _datacontext.Add(registerUser);
            await _datacontext.SaveChangesAsync();
-
-          return registerUser;
+     
+           return new UserDTO{
+                    UserName=registerUser.UserName,
+                    Token=_tokenservice.CreateToken(registerUser)
+                };
         }
         
         [HttpPost("login")]
