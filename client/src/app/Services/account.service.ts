@@ -14,19 +14,20 @@ export class AccountService {
   private currentSource=new ReplaySubject<User>(1);
   public currentUser$=this.currentSource.asObservable();
   constructor(private http:HttpClient) { }
-
+ 
     login(userModel:any){
-     return this.http.post(this.baseUrl+"account/login",userModel).pipe(map((response: any)=>{
+     return this.http.post(this.baseUrl+"account/login",userModel).pipe(map((response: User)=>{
        const user=response;
        if(user){
-        localStorage.setItem('user',JSON.stringify( user));
+         debugger;
+        localStorage.setItem('user',JSON.stringify(user));
         this.currentSource.next(user);
        }
 
      }))
     }
     register(userModel:any){
-    return  this.http.post(this.baseUrl+"account/register",userModel).pipe(map((user:any)=>{
+    return  this.http.post(this.baseUrl+"account/register",userModel).pipe(map((user:User)=>{
       if(user){
         localStorage.setItem('user',JSON.stringify(user));
         this.currentSource.next(user);
