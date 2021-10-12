@@ -1,0 +1,14 @@
+<p>error-handling works!</p>
+<ng-container >
+    <div class="btn btn-outline-primary mr-3" (click)="get401()">Unauthrize</div>
+    <div class="btn btn-outline-primary  mr-3" (click)="get501()">Server Error</div>
+    <div class="btn  btn-outline-primary  mr-3" (click)="get400()">Bad Request</div>
+    <div class="btn btn-outline-primary  mr-3" (click)="get404()">Not Found</div>
+    <div class="row mt-5" *ngIf="validationError.length>0">
+      <ul class="text-danger">
+            <li *ngFor="let error of validationError">
+               {{error}}
+            </li>
+      </ul>
+    </div>
+</ng-container>
