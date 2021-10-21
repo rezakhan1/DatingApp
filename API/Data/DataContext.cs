@@ -13,5 +13,6 @@ namespace API.Data
             
         }
      public   DbSet<AppUser> User {get;set;}
+     public   DbSet<Photo> Photos {get;set;}
     }
 }

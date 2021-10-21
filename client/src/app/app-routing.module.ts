@@ -4,10 +4,12 @@ import { ErrorHandlingComponent } from './Error/error-handling/error-handling.co
 import { NotFoundComponent } from './Error/not-found/not-found.component';
 import { ServerNotFoundComponent } from './Error/server-not-found/server-not-found.component';
 import { AuthdGuard } from './guards/authguard';
+import { PreventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
 
 import { HomeComponent } from './home/home.component';
 import { ListsComponent } from './lists/lists.component';
 import { MemberDetailsComponent } from './members/member-details/member-details.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
 
@@ -18,8 +20,9 @@ const routes: Routes = [
     canActivate:[AuthdGuard],
     runGuardsAndResolvers:'always',
     children:[
-      { path:'member/:id', component:MemberDetailsComponent },
-      { path:'member', component:MemberListComponent,canActivate:[AuthdGuard] },
+      { path:'member/:username', component:MemberDetailsComponent },
+      { path:'members/edit', component:MemberEditComponent, canDeactivate:[PreventUnsavedChangesGuard] },
+      { path:'member', component:MemberListComponent},
       { path:'lists', component:ListsComponent },
       { path:'message', component:MessagesComponent },
     ]

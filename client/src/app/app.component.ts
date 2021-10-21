@@ -23,10 +23,10 @@ export class AppComponent implements OnInit {
     this._service.setCurrentUser((user));
    }
   getUsers(){
-    this.http.get("https://localhost:5001/api/user/allusers").subscribe(result=>{
-      this.users=result
-    } ,err=>{
-      console.log(err)
-    })
+    // this.http.get("https://localhost:5001/api/user/allusers").subscribe(result=>{
+    //   this.users=result
+    // } ,err=>{
+    //   console.log(err)
+    // })
   }
 }

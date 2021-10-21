@@ -21,6 +21,12 @@ import { ErrorHandlingComponent } from './Error/error-handling/error-handling.co
 import { ErrorInterceptor } from './interceptor/error.interceptor';
 import { NotFoundComponent } from './Error/not-found/not-found.component';
 import { ServerNotFoundComponent } from './Error/server-not-found/server-not-found.component';
+import { MemberCardsComponent } from './members/member-cards/member-cards.component';
+import { JwtInterceptor } from './interceptor/jwt.interceptor';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
+import { LoadingInterceptor } from './interceptor/loading.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +40,9 @@ import { ServerNotFoundComponent } from './Error/server-not-found/server-not-fou
     MessagesComponent,
     ErrorHandlingComponent,
     NotFoundComponent,
-    ServerNotFoundComponent
+    ServerNotFoundComponent,
+    MemberCardsComponent,
+    MemberEditComponent
   ],
   imports: [
     BrowserModule,
@@ -42,13 +50,15 @@ import { ServerNotFoundComponent } from './Error/server-not-found/server-not-fou
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    NgxGalleryModule,
+    NgxSpinnerModule
    
   ],
   providers: [
-    {
-      provide:HTTP_INTERCEPTORS,useClass:ErrorInterceptor,multi:true
-    }
+    { provide:HTTP_INTERCEPTORS,useClass:ErrorInterceptor,multi:true},
+    { provide:HTTP_INTERCEPTORS,useClass:JwtInterceptor,multi:true},
+    { provide:HTTP_INTERCEPTORS,useClass:LoadingInterceptor,multi:true}
   ],
   bootstrap: [AppComponent]
 })
