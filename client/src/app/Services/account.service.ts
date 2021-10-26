@@ -20,9 +20,7 @@ export class AccountService {
      return this.http.post(this.baseUrl+"account/login",userModel).pipe(map((response: User)=>{
        const user=response;
        if(user){
-         debugger;
-        localStorage.setItem('user',JSON.stringify(user));
-        this.currentSource.next(user);
+        this.setCurrentUser(user);
        }
 
      }))
@@ -30,13 +28,13 @@ export class AccountService {
     register(userModel:any){
     return  this.http.post(this.baseUrl+"account/register",userModel).pipe(map((user:User)=>{
       if(user){
-        localStorage.setItem('user',JSON.stringify(user));
-        this.currentSource.next(user);
+        this.setCurrentUser(user)
       }
       return user;
       }))
     }
   setCurrentUser(user:User){
+    localStorage.setItem('user',JSON.stringify(user));
     const User=user?user:undefined;
    this.currentSource.next(User);
   }

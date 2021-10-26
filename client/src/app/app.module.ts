@@ -6,8 +6,7 @@ import { AppComponent } from './app.component';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component'
-import { FormsModule } from '@angular/forms';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { MembersComponent } from './members/members.component';
@@ -15,7 +14,6 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { MemberDetailsComponent } from './members/member-details/member-details.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
-import {ToastrModule} from 'ngx-toastr'
 import { SharedModule } from '_modules/shared.module';
 import { ErrorHandlingComponent } from './Error/error-handling/error-handling.component';
 import { ErrorInterceptor } from './interceptor/error.interceptor';
@@ -27,6 +25,8 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './interceptor/loading.interceptor';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import { TextInputComponent } from './text-input/text-input.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +42,9 @@ import { LoadingInterceptor } from './interceptor/loading.interceptor';
     NotFoundComponent,
     ServerNotFoundComponent,
     MemberCardsComponent,
-    MemberEditComponent
+    MemberEditComponent,
+    PhotoEditorComponent,
+    TextInputComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +52,7 @@ import { LoadingInterceptor } from './interceptor/loading.interceptor';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     NgxGalleryModule,
     NgxSpinnerModule

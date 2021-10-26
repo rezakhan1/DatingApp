@@ -8,6 +8,7 @@ using API.Data;
 using API.DTOs;
 using API.Entity;
 using API.Interface;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,36 +18,43 @@ namespace API.Controllers
     {
         DataContext _datacontext;
         ITokenService _tokenservice;
-        public AccountController(DataContext dataContext,ITokenService tokenService)
+
+        IMapper _mapper;
+        public AccountController(DataContext dataContext,ITokenService tokenService,IMapper mapper)
         {
             _datacontext=dataContext;
             _tokenservice=tokenService;
+           _mapper=mapper;
+
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<UserDTO>> register(RegisterDTO registerDTO){
 
           if(await isUserExists(registerDTO.UserName)) return BadRequest("User is already taken");
+           var user=_mapper.Map<AppUser>(registerDTO);
            using var hash=new HMACSHA512();
 
-           var registerUser=new AppUser(){
-               UserName=registerDTO.UserName.ToLower(),
-               HashPassword= hash.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password)),
-               SaltPassword=hash.Key
-           };
+           
+               user.UserName=registerDTO.UserName.ToLower();
+               user.HashPassword= hash.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password));
+               user.SaltPassword=hash.Key;
+        
 
-          _datacontext.Add(registerUser);
+          _datacontext.Add(user);
            await _datacontext.SaveChangesAsync();
      
            return new UserDTO{
-                    UserName=registerUser.UserName,
-                    Token=_tokenservice.CreateToken(registerUser)
+                    UserName=user.UserName,
+                    Token=_tokenservice.CreateToken(user),
+                    KnownAs=user.KnownAs
                 };
         }
         
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> login(LoginDTO loginDTO){
                   var user=await _datacontext.User
+                           .Include(p=>p.Photos)
                            .SingleOrDefaultAsync(x =>x.UserName ==loginDTO.UserName);
 
                   if(user ==null) return Unauthorized("User no found");
@@ -60,7 +68,11 @@ namespace API.Controllers
 
                 return new UserDTO{
                     UserName=user.UserName,
-                    Token=_tokenservice.CreateToken(user)
+                    Token=_tokenservice.CreateToken(user),
+                    photoUrl=user.Photos.FirstOrDefault(x=>x.IsMain).Url,
+                    KnownAs=user.KnownAs
+
+                    
                 };
         }
 
