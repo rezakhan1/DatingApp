@@ -5,7 +5,7 @@
             <li class="list-inline-item"><button class="btn btn-primary" routerLink="/member/{{member.knownAs}}">
                 <i class="fa fa-user"></i></button></li>
             <li class="list-inline-item"><button class="btn btn-primary">
-                <i class="fa fa-heart"></i></button></li>
+                <i class="fa fa-heart" (click)="addLikes(member)"></i></button></li>
             <li class="list-inline-item">
                 <button class="btn btn-primary">
                 <i class="fa fa-envelope"></i>

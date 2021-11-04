@@ -89,6 +89,19 @@ debugger;
     deletePhoto(photoId:number){
       return  this.http.delete(this.baseUrl+'user/delete-photo/'+photoId,{});
       }
+
+   addLike(userName:string){
+     debugger
+    return this.http.post(this.baseUrl+'likes/'+userName.toLowerCase(),{})
+   }   
+   
+   getLikes(predicate:string,pageNumber, pageSize){
+    let params = this.getPaginationHeader(pageNumber, pageSize);
+    params = params.append('predicate', predicate);
+    return this.getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
+   // return this.http.get<Partial<Member[]>>(this.baseUrl+'likes?predicate='+predicate);
+
+   }
     
 }
  
