@@ -8,6 +8,7 @@ import { PreventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.gua
 
 import { HomeComponent } from './home/home.component';
 import { ListsComponent } from './lists/lists.component';
+import { MemberdetailresolverResolver } from './memberdetailresolver.resolver';
 import { MemberDetailsComponent } from './members/member-details/member-details.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
@@ -20,7 +21,7 @@ const routes: Routes = [
     canActivate:[AuthdGuard],
     runGuardsAndResolvers:'always',
     children:[
-      { path:'member/:username', component:MemberDetailsComponent },
+      { path:'member/:username', component:MemberDetailsComponent ,resolve:{member:MemberdetailresolverResolver} },
       { path:'members/edit', component:MemberEditComponent, canDeactivate:[PreventUnsavedChangesGuard] },
       { path:'member', component:MemberListComponent},
       { path:'lists', component:ListsComponent },

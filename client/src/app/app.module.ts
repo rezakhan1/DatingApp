@@ -27,6 +27,7 @@ import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './interceptor/loading.interceptor';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { TextInputComponent } from './text-input/text-input.component';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +45,8 @@ import { TextInputComponent } from './text-input/text-input.component';
     MemberCardsComponent,
     MemberEditComponent,
     PhotoEditorComponent,
-    TextInputComponent
+    TextInputComponent,
+    MemberMessagesComponent
   ],
   imports: [
     BrowserModule,
