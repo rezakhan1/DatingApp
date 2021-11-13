@@ -4,6 +4,7 @@ import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
+import { PresenceService } from './presence.service';
 
 //import { User } from '../_Model/User';
 
@@ -14,13 +15,14 @@ export class AccountService {
   baseUrl=environment.apiUrl;
   private currentSource=new ReplaySubject<User>(1);
   public currentUser$=this.currentSource.asObservable();
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,private presence: PresenceService) { }
  
     login(userModel:any){
      return this.http.post(this.baseUrl+"account/login",userModel).pipe(map((response: User)=>{
        const user=response;
        if(user){
         this.setCurrentUser(user);
+        this.presence.createHubConnection(user);
        }
 
      }))
@@ -29,6 +31,7 @@ export class AccountService {
     return  this.http.post(this.baseUrl+"account/register",userModel).pipe(map((user:User)=>{
       if(user){
         this.setCurrentUser(user)
+        this.presence.createHubConnection(user);
       }
       return user;
       }))
@@ -40,7 +43,9 @@ export class AccountService {
   }
     logout(){
       localStorage.removeItem('user');
+      
       this.currentSource.next(undefined);
+      this.presence.stopHubConnection();
     }
 }
  
