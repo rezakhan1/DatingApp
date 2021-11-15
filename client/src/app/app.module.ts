@@ -28,6 +28,7 @@ import { LoadingInterceptor } from './interceptor/loading.interceptor';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { TextInputComponent } from './text-input/text-input.component';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { ConfirmDialogComponent } from './_models/confirm-dialog/confirm-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +47,8 @@ import { MemberMessagesComponent } from './members/member-messages/member-messag
     MemberEditComponent,
     PhotoEditorComponent,
     TextInputComponent,
-    MemberMessagesComponent
+    MemberMessagesComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

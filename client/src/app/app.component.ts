@@ -15,7 +15,6 @@ export class AppComponent implements OnInit {
 
   }
   ngOnInit() {
-   this.getUsers();
    this.setCurrentUser();
   }
   setCurrentUser(){
@@ -26,11 +25,4 @@ export class AppComponent implements OnInit {
       this.presence.createHubConnection(user);
     }
    }
-  getUsers(){
-    // this.http.get("https://localhost:5001/api/user/allusers").subscribe(result=>{
-    //   this.users=result
-    // } ,err=>{
-    //   console.log(err)
-    // })
-  }
 }

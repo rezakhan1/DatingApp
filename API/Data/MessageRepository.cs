@@ -70,7 +70,7 @@ namespace API.Data
         {
             var query = _context.Messages
                 .OrderByDescending(m => m.MessageSent)
-               // .ProjectTo<MessageDTO>(_mapper.ConfigurationProvider)
+                .ProjectTo<MessageDTO>(_mapper.ConfigurationProvider)
                 .AsQueryable();
 
             query = messageParams.Container switch
@@ -84,16 +84,14 @@ namespace API.Data
                 _ => query.Where(u => u.RecipientUsername ==
                     messageParams.Username && u.RecipientDeleted == false && u.DateRead == null)
             };
-            var message=query.ProjectTo<MessageDTO>(_mapper.ConfigurationProvider); 
-            return await PagedList<MessageDTO>.CreateAsync(message, messageParams.PageNumber, messageParams.PageSize);
+          //  var message=query.ProjectTo<MessageDTO>(_mapper.ConfigurationProvider); 
+            return await PagedList<MessageDTO>.CreateAsync(query, messageParams.PageNumber, messageParams.PageSize);
 
         }
 
         public async Task<IEnumerable<MessageDTO>> GetMessageThread(string currentUsername, string recipientUsername)
         {
-            var messages = await _context.Messages
-            .Include(m=>m.Sender).ThenInclude(m=>m.Photos)
-             .Include(m=>m.Recipient).ThenInclude(m=>m.Photos)
+            var messages = await _context.Messages            
                 .Where(m => m.Recipient.UserName == currentUsername
                        && m.RecipientDeleted == false
                         && m.Sender.UserName == recipientUsername
@@ -102,11 +100,11 @@ namespace API.Data
                 )
                 .MarkUnreadAsRead(currentUsername)
                 .OrderBy(m => m.MessageSent)
-               // .ProjectTo<MessageDTO>(_mapper.ConfigurationProvider)
+                .ProjectTo<MessageDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
             var unreadMessage=messages.Where(m=>m.DateRead==null 
-                && m.Recipient.UserName==currentUsername).ToList();
+                && m.RecipientUsername==currentUsername).ToList();
 
              if(unreadMessage.Any()){
                  foreach(var message in unreadMessage){
@@ -114,7 +112,7 @@ namespace API.Data
                 }
                 await _context.SaveChangesAsync();
             }
-            return _mapper.Map<IEnumerable<MessageDTO>>(messages);
+            return messages;
         }
 
         public void RemoveConnection(Connection connection)

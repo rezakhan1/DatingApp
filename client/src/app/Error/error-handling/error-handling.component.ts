@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-error-handling',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./error-handling.component.css']
 })
 export class ErrorHandlingComponent implements OnInit {
-   baseUrl:string="https://localhost:5001/api/";
+   baseUrl:string=environment.apiUrl// "https://localhost:5001/api/";
    validationError:string[]=[];
   constructor(private http:HttpClient) { }
 
